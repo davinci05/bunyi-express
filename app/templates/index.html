@@ -13,9 +13,10 @@
         <a href="/logout">Logout</a>
     </div>
     <div class="container">
+        <div id="confirmation-panel" class="confirmation-panel">Note submitted successfully!</div>
         <div>
             <h1>Submit a Note</h1>
-            <form action="/submit_note" method="POST">
+            <form action="/submit_note" method="POST" onsubmit="showConfirmation(event)">
                 <label for="location">Location:</label>
                 <div class="input-group">
                     <input type="text" id="location" name="location" required>
@@ -79,6 +80,20 @@
                     console.error('Error:', error);
                     document.getElementById('location').value = "Location not found";
                 });
+        }
+
+        function showConfirmation(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            // Show the confirmation panel
+            const panel = document.getElementById('confirmation-panel');
+            panel.style.display = 'block';
+
+            // Hide the panel after 3 seconds
+            setTimeout(() => {
+                panel.style.display = 'none';
+                event.target.submit(); // Submit the form after showing the confirmation
+            }, 3000);
         }
     </script>
 </body>

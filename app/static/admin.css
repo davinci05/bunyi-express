@@ -63,6 +63,26 @@ th, td {
 th {
     background-color: #eceff1;
     color: #37474f;
+    position: relative;
+}
+
+th .sort-icons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+th .sort-icons a {
+    color: #607d8b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+th .sort-icons a:hover {
+    color: #00796b;
 }
 
 .popup {
