@@ -1,19 +1,17 @@
 
 # TODO
--> password sollen nicht in den browser gesendet werden
+-> Passwörter werden in admin.py in den Browser gesendet
+-> Navigation als eigene Template
+-> Admin Panel soll nicht angezeigt werden für normalen User
+-> Den Form überarbeiten, 2 Werte werden gesendet von den Inputs
 -> checkbox links
--> timestamp weg
--> username displayed 
--> das form mit neuem user kann so nicht richtig sein mit der hidden input type aber funktioniret iwie (doppelte values werden gesendet)
-->delete_all_users löschen
--> panel admin ausbldenden für normale user
-
 ->DB Backup Funktion
 
 
-->Organize Folders
-->Extend Nav
-->.env file
-
 ## Changes
-->gitignore eingeführt
+-> Delete All Users Funktion wurde rausgenommen
+-> Username werden angezeigt (admin.py)
+-> Dateien wurden organisiert
+-> .gitignore eingeführt
+-> Timestamp eingeführt
+-> .env Datei
