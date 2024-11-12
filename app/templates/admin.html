@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>Admin Interface</h1>
+        <table>
+            <tr>
+                <th>Location</th>
+                <th>Note</th>
+                <th>Username</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for note in notes %}
+            <tr>
+                <td>{{ note.location }}</td>
+                <td>{{ note.content }}</td>
+                <td>{{ note.username }}</td>
+                <td>{{ note.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Admin</th>
+                <th>Delete</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.admin }}</td>
+                <td>
+                    <form action="/user/delete_user" method="POST">
+                        <input type="hidden" name="user_id" value="{{user.id}}"/>
+                        <button type="submit" class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button id="createUserBtn">Create User</button>
+    </div>
+
+    <!-- Pop-up form -->
+    <div id="formPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" id="closeFormBtn">&times;</span>
+            <form action="/user/new_user" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <label for="admin">
+                    <input type="checkbox" id="admin" name="admin" value="true">
+                    Admin
+                </label>
+                <input type="hidden" name="admin" value="false">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('createUserBtn').addEventListener('click', function() {
+            document.getElementById('formPopup').style.display = 'block';
+        });
+
+        document.getElementById('closeFormBtn').addEventListener('click', function() {
+            document.getElementById('formPopup').style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            const popup = document.getElementById('formPopup');
+            if (event.target == popup) {
+                popup.style.display = 'none'; 
+            }
+        }
+    </script>
+</body>
+</html>

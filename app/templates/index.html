@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Submission</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='note.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <div class="container">
+        <div>
+            <h1>Submit a Note</h1>
+            <form action="/submit_note" method="POST">
+                <label for="location">Location:</label>
+                <div class="input-group">
+                    <input type="text" id="location" name="location" required>
+                    <button type="button" class="location-button" onclick="getLocation()">
+                        <span class="location-icon">📍</span>
+                    </button>
+                </div>
+                <label for="content">Note:</label>
+                <textarea id="content" name="content" required></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById('location').value = "Geolocation not supported";
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            // Call reverseGeocode here to get the address after obtaining coordinates
+            reverseGeocode(latitude, longitude);
+        }
+
+        function showError(error) {
+            let errorMessage = "Location not found";
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    errorMessage = "An unknown error occurred.";
+                    break;
+            }
+            document.getElementById('location').value = errorMessage;
+        }
+
+        function reverseGeocode(latitude, longitude) {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const address = data.display_name || "Location not found";
+                    document.getElementById('location').value = address;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('location').value = "Location not found";
+                });
+        }
+    </script>
+</body>
+</html>
